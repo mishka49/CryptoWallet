@@ -8,14 +8,14 @@ from authentication.serializers import UserSerializer
 
 
 # Create your views here.
-class UserRegistrationView(APIView):
-    permission_classes = (AllowAny,)
-    serializer_class = UserSerializer
-
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+# class UserRegistrationView(APIView):
+#     permission_classes = (AllowAny,)
+#     serializer_class = UserSerializer
+#
+#     def post(self, request):
+#         serializer = UserSerializer(data=request.data)
+#
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)

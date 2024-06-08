@@ -17,3 +17,7 @@ class EthereumWallet(WalletABC):
     @staticmethod
     def get_balance():
         pass
+
+    @staticmethod
+    def generate_seed(self):
+        pass

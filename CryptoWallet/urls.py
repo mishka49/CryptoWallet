@@ -22,5 +22,6 @@ import authentication
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
+    path('registration/', include('registration.urls')),
     path('wallet/', include('wallet.urls')),
 ]
