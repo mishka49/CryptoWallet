@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    'drf_yasg',
+
     "rest_framework",
 
     "authentication",
-    "wallet",
+    "wallets",
 
 ]
 
@@ -139,8 +141,6 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-SITE_ID = 1
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

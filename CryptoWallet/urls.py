@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
-import authentication
+from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
     path('registration/', include('registration.urls')),
-    path('wallet/', include('wallet.urls')),
+    path('wallets/', include('wallets.urls')),
+    path('transactions/', include('transactions.urls')),
 ]
+
+urlpatterns += doc_urls

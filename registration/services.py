@@ -1,14 +1,10 @@
-from datetime import datetime, timedelta
-
 import jwt
-from django.contrib.sites.models import Site
-from rest_framework.reverse import reverse_lazy
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-from rest_framework_simplejwt.tokens import AccessToken
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from CryptoWallet import settings
 from notifications.services import send_mail_for_user
+from registration.repositories import UserRepository
 
 
 def send_registration_mail(user, site_host):
@@ -25,7 +21,7 @@ def send_registration_mail(user, site_host):
     )
 
 
-def generate_confirm_link(user, host):
+def generate_confirm_link(user, host: str):
     payload = {
         "user_id": user.id,
     }
@@ -34,3 +30,17 @@ def generate_confirm_link(user, host):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
 
     return f'{host}/registration/confirm-email/{uid}/{token}/'
+
+
+def is_confirmed_registration(uid, token) -> bool:
+    id = urlsafe_base64_decode(uid)
+    decoded_token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+    user_id = decoded_token['user_id']
+
+    if user_id == int(id):
+        user = UserRepository.get_user_by_id(id)
+        user.is_active = True
+        user.save()
+        return True
+
+    return False

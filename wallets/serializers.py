@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from wallet.models import Wallet
+from wallets.models import WalletModel
 
 
 class WalletSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wallet
+        model = WalletModel
         fields = ('id', 'public_key')
 
