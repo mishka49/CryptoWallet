@@ -1,6 +1,4 @@
-# from authentication.models import User
 from wallets.models import WalletModel
-from wallets.services.wallet_abc import WalletABC
 
 
 class WalletRepository:
@@ -15,4 +13,3 @@ class WalletRepository:
     @staticmethod
     def get_users_wallets(user):
         return WalletModel.objects.filter(user=user)
-

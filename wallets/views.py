@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from wallets.repositories import WalletRepository
 from wallets.serializers import WalletSerializer
-from wallets.services.wallet import Wallet
+from wallets.services.wallet_creator import WalletCreator
 
 
 class WalletsView(APIView):
@@ -20,14 +20,20 @@ class WalletsView(APIView):
 
 
 class WalletsCreatorView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request, wallet_type):
         try:
-            Wallet.create_wallet(wallet_type=wallet_type, user=request.user)
+            wallet = WalletCreator.create_wallet(wallet_type=wallet_type)
+            wallet.save_wallet(request.user)
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response(status=status.HTTP_200_OK)
 
+
 class WalletsInfoView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, wallet_address):
         pass
