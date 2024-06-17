@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
 
     "authentication",
     "wallets",
+    "transactions",
+    "notifications",
 
 ]
 
@@ -63,7 +66,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-ROOT_URLCONF = 'CryptoWallet.urls'
+ROOT_URLCONF = 'crypto_wallet.urls'
 
 TEMPLATES = [
     {
@@ -82,15 +85,18 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'CryptoWallet.wsgi.application'
+WSGI_APPLICATION = 'crypto_wallet.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
     }
 }
 
@@ -149,5 +155,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'smartbeehive.messages@gmail.com'
 EMAIL_HOST_PASSWORD = 'hyaeowyixtciccgj'
 EMAIL_PORT = 587
+
+# celery
+CELERY_BROKER_URL = "redis://redis:6379/0"
 
 

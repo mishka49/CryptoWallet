@@ -1,5 +1,3 @@
-import jwt
-from django.utils.http import urlsafe_base64_decode
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -17,12 +15,16 @@ class UserRegistrationView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
 
+        if (user := UserRepository.get_user_by_email(request.data['email'])) is not None and not user.is_active:
+            send_registration_mail(user, request.get_host())
+            return Response(status=status.HTTP_200_OK)
+
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_201_CREATED)
 
-        return Response(serializer.data, status=status.HTTP_409_CONFLICT)
+        return Response(status=status.HTTP_409_CONFLICT)
 
 
 class UserSendConfirmMailView(APIView):
@@ -40,6 +42,6 @@ class ConfirmationRegistrationView(APIView):
 
     def get(self, request, uid, token):
         if is_confirmed_registration(uid, token):
-            return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_201_CREATED)
 
         return Response(status=status.HTTP_403_FORBIDDEN)

@@ -1,7 +1,6 @@
 from django.db import models
 
-from CryptoWallet import settings
-from authentication.models import User
+from crypto_wallet import settings
 
 
 # Create your models here.
@@ -16,6 +15,3 @@ class WalletModel(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-
-

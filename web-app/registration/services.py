@@ -2,8 +2,8 @@ import jwt
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from CryptoWallet import settings
-from notifications.services import send_mail_for_user
+from crypto_wallet import settings
+from notifications.tasks import send_email
 from registration.repositories import UserRepository
 
 
@@ -11,7 +11,7 @@ def send_registration_mail(user, site_host):
     print("USER:", user)
     confirm_url = generate_confirm_link(user, site_host)
 
-    send_mail_for_user(
+    send_email.delay(
         email=user.email,
         title="Confirm registration in CryptoWallet account",
         message="Thank you for registering on our website. "

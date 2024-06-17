@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 
-from CryptoWallet import settings
+from crypto_wallet import settings
 
 
 def send_mail_for_user(email, title, message):
