@@ -36,22 +36,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
 
     'drf_yasg',
-
     "rest_framework",
+    'corsheaders',
 
     "authentication",
     "wallets",
     "transactions",
     "notifications",
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -146,7 +146,13 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Здесь укажите URL вашего React-приложения
+]
+
+# INTERNAL_IPS = [
+#     '127.0.0.1:3000',
+# ]
 
 # smtp
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -158,5 +164,3 @@ EMAIL_PORT = 587
 
 # celery
 CELERY_BROKER_URL = "redis://redis:6379/0"
-
-

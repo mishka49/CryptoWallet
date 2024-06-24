@@ -8,4 +8,4 @@ class UserRepository:
 
     @staticmethod
     def get_user_by_email(email: str):
-        return User.objects.get(email=email)
+        return User.objects.filter(email=email)

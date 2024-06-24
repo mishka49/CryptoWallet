@@ -7,6 +7,8 @@ from authentication.serializers import UserSerializer
 from .repositories import UserRepository
 from .services import send_registration_mail, is_confirmed_registration
 
+from .templates import registration
+
 
 class UserRegistrationView(APIView):
     permission_classes = (AllowAny,)
@@ -15,7 +17,7 @@ class UserRegistrationView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
 
-        if (user := UserRepository.get_user_by_email(request.data['email'])) is not None and not user.is_active:
+        if (user := UserRepository.get_user_by_email(request.data['email'])) is user.exists() and not user.is_active:
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_200_OK)
 
@@ -42,6 +44,7 @@ class ConfirmationRegistrationView(APIView):
 
     def get(self, request, uid, token):
         if is_confirmed_registration(uid, token):
-            return Response(status=status.HTTP_201_CREATED)
+            return render(request, "registration.confirm.html")
+        #     return Response(status=status.HTTP_201_CREATED)
 
         return Response(status=status.HTTP_403_FORBIDDEN)
