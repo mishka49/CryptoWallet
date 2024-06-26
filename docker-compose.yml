@@ -41,3 +41,14 @@ services:
       - redis
     depends_on:
       - redis
+
+  react-web-app:
+    build:
+      context: ./react-web-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./react-web-app:/react-web-app
+
+    command: >
+      sh -c "npm start 0.0.0.0:3000"
