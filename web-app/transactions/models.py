@@ -7,7 +7,7 @@ class TransactionModel(models.Model):
     wallet_recipient = models.ForeignKey("WalletModel", on_delete=models.SET_NULL, null=True),
     user_recipient = models.ForeignKey("User", on_delete=models.SET_NULL, null=True),
     user_sender = models.ForeignKey("User", on_delete=models.SET_NULL, null=True),
-    wallet_sender = models.ForeignKey("User", on_delete=models.SET_NULL, null=True),
+    wallet_sender = models.ForeignKey("WalletModel", on_delete=models.SET_NULL, null=True),
     total = models.FloatField(),
 
     class Meta:

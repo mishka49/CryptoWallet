@@ -8,6 +8,8 @@ from transactions.repositories import TransactionRepository
 from transactions.serializers import TransactionSerializer
 from transactions.services.transaction_creator import TransactionCreator
 
+from wallets.repositories import WalletRepository
+
 
 class TransactionListView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -18,10 +20,16 @@ class TransactionListView(APIView):
         serializer = TransactionListView.serializer_class(transactions)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, transaction_type):
+    def post(self, request):
         try:
-            transaction = TransactionCreator.create_transaction(transaction_type=transaction_type)
-            transaction.send(request.user)
+            print("REQUEST", request.data)
+
+            transaction = TransactionCreator.create_transaction(transaction_type=WalletRepository.get_wallets_type(request.data["wallet_sender"]))
+            transaction.send(
+                user_sender=request.user,
+                wallet_sender=request.data["wallet_sender"],
+                addres_wallet_recipient=request.data["address_wallet_recipient"]
+            )
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 

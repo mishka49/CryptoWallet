@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from wallets.repositories import WalletRepository
+from wallets.repositories import WalletRepository, WalletTypeRepository
 
 
 class WalletABC(ABC):
@@ -8,9 +8,11 @@ class WalletABC(ABC):
     def __init__(self):
         self.public_key = str()
         self.private_key = str()
+        self.seed = str()
+        self.type = str()
 
     @abstractmethod
-    def create_wallet(self):
+    def create_wallet(self, seed: str):
         pass
 
     @abstractmethod
@@ -18,7 +20,9 @@ class WalletABC(ABC):
         WalletRepository.create_wallet(
             user=user,
             public_key=self.public_key,
-            private_key=self.private_key
+            private_key=self.private_key,
+            seed=self.seed,
+            type=WalletTypeRepository.get_type_by_name(self.type)
         )
 
     @staticmethod

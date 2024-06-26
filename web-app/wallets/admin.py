@@ -1,3 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
+from wallets.models import WalletModel, WalletTypeModel
+
+
+@admin.register(WalletModel)
+class WalletModelAdmin(admin.ModelAdmin):
+    list_display = ["id"]
+
+@admin.register(WalletTypeModel)
+class WalletTypeModelAdmin(admin.ModelAdmin):
+    list_display = ["name"]

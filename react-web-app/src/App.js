@@ -9,9 +9,9 @@ import {Routes, Route, Link} from 'react-router-dom'
 import HistoryPage from "./pages/history_page";
 import SignUpPage from "./pages/signup_page";
 import SignInPage from "./pages/signin_page";
-import {useState} from "react";
 import ProtectedRoute from "./routes/protectedRoutes";
 import LogoutPage from "./pages/logout_page";
+import WalletPage from "./pages/wallet_page";
 
 function App() {
     return (
@@ -24,6 +24,7 @@ function App() {
                 <Route path="/" element={<HomePage/>}/>
                 <Route path="/Wallets"
                        element={<ProtectedRoute element={<WalletsPage/>}/>}/>
+                <Route path="/Wallets/Create" element={<ProtectedRoute element={<WalletPage/>}/>}/>
                 <Route path="/Transaction"
                        element={<ProtectedRoute element={<TransactionsPage/>}/>}/>
                 <Route path="/History"
