@@ -8,14 +8,16 @@ from wallets.repositories import WalletRepository
 class TransactionRepository:
     @staticmethod
     def get_users_transactions(user: User):
-        return TransactionModel.objects.filter(Q(user_sender__id=user) | Q(user_recipient=user))
+        return TransactionModel.objects.filter(Q(user_sender__id=user.id) | Q(user_recipient=user.id ))
 
     @staticmethod
-    def create_transaction(user_sender: User, wallet_sender, wallet_recipient, total):
-        Transaction.objects.create(
+    def save_transaction(user_sender: User, wallet_sender, wallet_recipient, total):
+        print("WALLeT USER", WalletRepository.get_wallets_user(wallet_recipient.public_key))
+        print(user_sender, wallet_sender, wallet_recipient.public_key, total)
+        TransactionModel.objects.create(
             user_sender=user_sender,
-            wallet_sender = wallet_sender,
-            user_recipient = WalletRepository.get_wallets_user(wallet_recipient),
-            wallet_recipient = wallet_recipient,
-            total = total
+            wallet_sender=wallet_sender,
+            user_recipient=WalletRepository.get_wallets_user(wallet_recipient.public_key),
+            wallet_recipient=wallet_recipient,
+            total=total
         )

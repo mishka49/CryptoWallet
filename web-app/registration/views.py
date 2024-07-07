@@ -19,7 +19,7 @@ class UserRegistrationView(APIView):
         user = UserRepository.get_user_by_email(request.data['email'])
 
         # if (user := UserRepository.get_user_by_email(request.data['email'])) is user.exists() and not user.is_active:
-        if user is not None and not user.is_active:
+        if user.exists() and not user[0].is_active:
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_200_OK)
 

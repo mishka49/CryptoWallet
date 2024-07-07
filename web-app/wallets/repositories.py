@@ -1,4 +1,5 @@
 from wallets.models import WalletModel, WalletTypeModel
+from authentication.models import User
 
 
 class WalletRepository:
@@ -21,12 +22,12 @@ class WalletRepository:
         return WalletModel.objects.get(public_key=public_key)
 
     @staticmethod
-    def get_wallet_by_seed(seed):
-        return WalletModel.objects.get(seed=seed)
+    def get_wallet_by_public_key_and_seed(public_key, seed):
+        return WalletModel.objects.get(public_key=public_key, seed=seed)
 
     @staticmethod
     def get_wallets_user(public_key):
-        return WalletModel.objects.get(public_key=public_key).user
+        return WalletModel.objects.select_related('user').get(public_key=public_key).user
 
     @staticmethod
     def get_wallets_type(public_key):

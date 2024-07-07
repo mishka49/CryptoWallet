@@ -15,7 +15,7 @@ export default function TransactionsPage() {
 
     const [seed, setSeed] = useState()
     const [addressWalletRecipient, setAddressWalletRecipient] = useState()
-    const [total, setTotal] = useState()
+    const [total, setTotal] = useState(10)
 
     useEffect(() => {
         getWallets()
@@ -45,12 +45,14 @@ export default function TransactionsPage() {
     }
 
     const handleChangeTotal = (event) => {
+        console.log("Total", total)
         setTotal(event.target.value)
     }
 
     const handleSubmit = (event) => {
         const seedHash = getSeed()
-        createTransaction(addressWalletRecipient, senderWallet, seedHash).then((response) => {
+        console.log("TOTAL", total)
+        createTransaction(addressWalletRecipient, senderWallet, total, seedHash).then((response) => {
             alert("Transaction was successful")
         })
     }

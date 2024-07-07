@@ -17,18 +17,21 @@ class TransactionListView(APIView):
 
     def get(self, request):
         transactions = TransactionRepository.get_users_transactions(user=request.user)
-        serializer = TransactionListView.serializer_class(transactions)
+        serializer = TransactionListView.serializer_class(transactions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         try:
             print("REQUEST", request.data)
 
-            transaction = TransactionCreator.create_transaction(transaction_type=WalletRepository.get_wallets_type(request.data["wallet_sender"]))
+            transaction = TransactionCreator.create_transaction(
+                transaction_type=WalletRepository.get_wallets_type(request.data["wallet_sender"]))
             transaction.send(
                 user_sender=request.user,
                 wallet_sender=request.data["wallet_sender"],
-                addres_wallet_recipient=request.data["address_wallet_recipient"]
+                wallet_recipient=request.data["address_wallet_recipient"],
+                total=request.data["total"],
+                seed=request.data["seed"]
             )
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
