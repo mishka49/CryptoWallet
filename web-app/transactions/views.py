@@ -1,3 +1,5 @@
+import logging
+
 from django.db.models import Q
 from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
@@ -10,6 +12,7 @@ from transactions.services.transaction_creator import TransactionCreator
 
 from wallets.repositories import WalletRepository
 
+logger = logging.getLogger(__name__)
 
 class TransactionListView(APIView):
     permission_classes = (IsAuthenticated,)
@@ -22,8 +25,6 @@ class TransactionListView(APIView):
 
     def post(self, request):
         try:
-            print("REQUEST", request.data)
-
             transaction = TransactionCreator.create_transaction(
                 transaction_type=WalletRepository.get_wallets_type(request.data["wallet_sender"]))
             transaction.send(
@@ -36,6 +37,7 @@ class TransactionListView(APIView):
         except ValueError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
+        logger.info(f"Create transaction: {request.data}")
         return Response(status=status.HTTP_200_OK)
 
 

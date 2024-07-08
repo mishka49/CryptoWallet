@@ -12,8 +12,6 @@ class TransactionRepository:
 
     @staticmethod
     def save_transaction(user_sender: User, wallet_sender, wallet_recipient, total):
-        print("WALLeT USER", WalletRepository.get_wallets_user(wallet_recipient.public_key))
-        print(user_sender, wallet_sender, wallet_recipient.public_key, total)
         TransactionModel.objects.create(
             user_sender=user_sender,
             wallet_sender=wallet_sender,
