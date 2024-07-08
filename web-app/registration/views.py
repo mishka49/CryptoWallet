@@ -1,3 +1,5 @@
+import logging
+
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -9,6 +11,7 @@ from authentication.serializers import UserSerializer
 from .repositories import UserRepository
 from .services import send_registration_mail, is_confirmed_registration
 
+logger = logging.getLogger(__name__)
 
 class UserRegistrationView(APIView):
     permission_classes = (AllowAny,)
@@ -18,12 +21,12 @@ class UserRegistrationView(APIView):
         serializer = UserSerializer(data=request.data)
         user = UserRepository.get_user_by_email(request.data['email'])
 
-        # if (user := UserRepository.get_user_by_email(request.data['email'])) is user.exists() and not user.is_active:
-        if user is not None and not user.is_active:
+        if user.exists() and not user[0].is_active:
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_200_OK)
 
         if serializer.is_valid(raise_exception=True):
+            logger.info(f"Create user {request.data['email']}")
             user = serializer.save()
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_201_CREATED)
@@ -38,6 +41,7 @@ class UserSendConfirmMailView(APIView):
         user = UserRepository.get_user_by_email(request.data['email'])
 
         if user is not None and not user.is_active:
+            loggger.info(f"Send email {request.data['email']}")
             send_registration_mail(user, request.get_host())
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_409_CONFLICT)
@@ -48,7 +52,7 @@ class ConfirmationRegistrationView(APIView):
 
     def get(self, request, uid, token):
         if is_confirmed_registration(uid, token):
-            # return render(request, 'registration/confirm.html')
+            logger.info(f"Activate user {request.data['email']}")
             return Response(status=status.HTTP_201_CREATED)
 
         return Response(status=status.HTTP_403_FORBIDDEN)

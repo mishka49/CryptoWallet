@@ -6,9 +6,6 @@ from transactions.services.transaction_type import TransactionType
 class TransactionCreator:
     @staticmethod
     def create_transaction(transaction_type: TransactionType):
-        print("TYPE", transaction_type)
-
-
         match transaction_type:
             case "ETH":
                 cls = TransactionETH

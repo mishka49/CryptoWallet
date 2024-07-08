@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import DataTable from "../components/dataTable";
 
 export default function HistoryPage() {
-    const [transaction, setTransaction] = useState([{id:0,wllet_sender:"", wallet_recipient:"",total:0}])
+    const [transaction, setTransaction] = useState([{id:0, wallet_sender_id:"", wallet_recipient_id:"",total:0}])
 
     useEffect(() => {
         getTransactionList().then((response) => {
@@ -15,8 +15,8 @@ export default function HistoryPage() {
 
     const columns = [
         // {field: 'id', headerName: 'ID', width: 70},
-        {field: 'wallet_sender', headerName: 'Sender', width: 130},
-        {field: 'wallet_recipient', headerName: 'Recipient', type: 'number', width: 50,},
+        {field: 'wallet_sender_id', headerName: 'Sender', width: 130},
+        {field: 'wallet_recipient_id', headerName: 'Recipient', type: 'number', width: 50,},
         {field: 'total', headerName: 'Total', width: 130},
     ];
 

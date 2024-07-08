@@ -33,10 +33,12 @@ export function getTransactionList() {
     return axios.get(`${baseURL}transactions/my_transactions/`)
 }
 
-export function createTransaction(addressWalletRecipient, walletSender, seed){
+export function createTransaction(addressWalletRecipient, walletSender, total, seed){
+    console.log("TRANSACTION TOTAL", seed)
     return axios.post(`${baseURL}transactions/create/`, {
         address_wallet_recipient: addressWalletRecipient,
         wallet_sender: walletSender,
-        seed: seed
+        seed: seed,
+        total: total,
     })
 }

@@ -1,9 +1,7 @@
 from django.db import models
-
 from crypto_wallet import settings
 
 
-# Create your models here.
 class WalletModel(models.Model):
     public_key = models.CharField(max_length=200)
     private_key = models.CharField(max_length=120)
